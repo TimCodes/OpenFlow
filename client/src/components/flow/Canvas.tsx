@@ -17,15 +17,49 @@ const nodeTypes = {
 };
 
 const Canvas = () => {
-  const { nodes, edges, setNodes, setEdges, onNodesChange, onEdgesChange, snapToGrid } = useFlowStore();
-  const { screenToFlowPosition, project } = useReactFlow();
+  const { 
+    nodes, 
+    edges, 
+    setNodes, 
+    setEdges, 
+    onNodesChange, 
+    onEdgesChange, 
+    snapToGrid,
+    selectEdge,
+    selectedEdge,
+    updateEdge
+  } = useFlowStore();
+  const { screenToFlowPosition } = useReactFlow();
 
   const onConnect = useCallback(
     (params: Connection) => {
-      const newEdge = { ...params, type: 'smoothstep' };
+      const newEdge = {
+        ...params,
+        type: 'smoothstep',
+        label: 'Edge Label',
+        animated: false,
+        style: { stroke: '#666' }
+      };
       setEdges((eds) => addEdge(newEdge, eds));
     },
     [setEdges]
+  );
+
+  const onEdgeClick = useCallback(
+    (_: React.MouseEvent, edge: Edge) => {
+      selectEdge(edge.id);
+    },
+    [selectEdge]
+  );
+
+  const onEdgeDoubleClick = useCallback(
+    (_: React.MouseEvent, edge: Edge) => {
+      const newLabel = window.prompt('Enter edge label:', edge.label as string);
+      if (newLabel !== null) {
+        updateEdge(edge.id, { ...edge, label: newLabel });
+      }
+    },
+    [updateEdge]
   );
 
   const onDrop = useCallback(
@@ -56,7 +90,7 @@ const Canvas = () => {
 
       setNodes((nds) => [...nds, newNode]);
     },
-    [screenToFlowPosition, setNodes]
+    [screenToFlowPosition, setNodes, snapToGrid]
   );
 
   const onDragOver = useCallback((event: React.DragEvent) => {
@@ -72,6 +106,8 @@ const Canvas = () => {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        onEdgeClick={onEdgeClick}
+        onEdgeDoubleClick={onEdgeDoubleClick}
         onDrop={onDrop}
         onDragOver={onDragOver}
         nodeTypes={nodeTypes}
