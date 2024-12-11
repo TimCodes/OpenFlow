@@ -3,14 +3,14 @@ import ReactFlow, {
   Background,
   Controls,
   MiniMap,
-  useReactFlow,
   Node,
   Edge,
   Connection,
   addEdge,
+  useReactFlow,
 } from 'reactflow';
 import { useFlowStore } from '@/hooks/useFlowStore';
-import CustomNode from './CustomNode';
+import CustomNode from '@/components/flow/CustomNode';
 
 const nodeTypes = {
   custom: CustomNode,
@@ -18,7 +18,7 @@ const nodeTypes = {
 
 const Canvas = () => {
   const { nodes, edges, setNodes, setEdges, onNodesChange, onEdgesChange } = useFlowStore();
-  const { project } = useReactFlow();
+  const { screenToFlowPosition } = useReactFlow();
 
   const onConnect = useCallback(
     (params: Connection) => setEdges((eds) => addEdge(params, eds)),
@@ -32,9 +32,9 @@ const Canvas = () => {
       const type = event.dataTransfer.getData('application/reactflow');
       if (!type) return;
 
-      const position = project({
-        x: event.clientX - 200,
-        y: event.clientY - 40,
+      const position = screenToFlowPosition({
+        x: event.clientX,
+        y: event.clientY,
       });
 
       const newNode: Node = {
@@ -46,7 +46,7 @@ const Canvas = () => {
 
       setNodes((nds) => [...nds, newNode]);
     },
-    [project, setNodes]
+    [screenToFlowPosition, setNodes]
   );
 
   const onDragOver = useCallback((event: React.DragEvent) => {

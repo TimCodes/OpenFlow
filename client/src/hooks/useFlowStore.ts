@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { initialNodes, initialEdges } from '../lib/mockData';
 import {
   Node,
   Edge,
@@ -30,8 +31,8 @@ interface FlowState {
 }
 
 export const useFlowStore = create<FlowState>((set, get) => ({
-  nodes: [],
-  edges: [],
+  nodes: initialNodes,
+  edges: initialEdges,
   selectedNode: null,
   history: [],
   currentStep: -1,
@@ -78,15 +79,15 @@ export const useFlowStore = create<FlowState>((set, get) => ({
     }));
   },
 
-  selectNode: (nodeId) => {
+  selectNode: (nodeId: string) => {
     set(produce((state) => {
-      state.selectedNode = state.nodes.find((node) => node.id === nodeId) || null;
+      state.selectedNode = state.nodes.find((node: Node) => node.id === nodeId) || null;
     }));
   },
 
-  updateNode: (nodeId, newData) => {
+  updateNode: (nodeId: string, newData: any) => {
     set(produce((state) => {
-      const node = state.nodes.find((n) => n.id === nodeId);
+      const node = state.nodes.find((n: Node) => n.id === nodeId);
       if (node) {
         node.data = newData;
         state.history = [...state.history.slice(0, state.currentStep + 1), { nodes: state.nodes, edges: state.edges }];
