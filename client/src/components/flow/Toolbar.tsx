@@ -12,7 +12,7 @@ import {
 import { useReactFlow } from 'reactflow';
 
 const Toolbar = () => {
-  const { saveToLocalStorage, loadFromLocalStorage, undo, redo, canUndo, canRedo } = useFlowStore();
+  const { saveToLocalStorage, loadFromLocalStorage, undo, redo, canUndo, canRedo, snapToGrid, toggleSnapToGrid } = useFlowStore();
   const { zoomIn, zoomOut, setViewport } = useReactFlow();
 
   const handleSave = () => {
@@ -76,6 +76,15 @@ const Toolbar = () => {
         title="Zoom Out"
       >
         <ZoomOut className="h-4 w-4" />
+      </Button>
+      <div className="w-px h-6 bg-border mx-2" />
+      <Button
+        variant="outline"
+        size="icon"
+        onClick={toggleSnapToGrid}
+        title={snapToGrid ? "Disable Grid Snap" : "Enable Grid Snap"}
+      >
+        <Grid className={`h-4 w-4 ${snapToGrid ? "text-primary" : ""}`} />
       </Button>
     </div>
   );

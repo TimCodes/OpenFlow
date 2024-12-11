@@ -16,6 +16,8 @@ interface FlowState {
   selectedNode: Node | null;
   history: { nodes: Node[]; edges: Edge[] }[];
   currentStep: number;
+  snapToGrid: boolean;
+  toggleSnapToGrid: () => void;
   setNodes: (nodes: Node[] | ((nodes: Node[]) => Node[])) => void;
   setEdges: (edges: Edge[] | ((edges: Edge[]) => Edge[])) => void;
   onNodesChange: (changes: NodeChange[]) => void;
@@ -36,8 +38,15 @@ export const useFlowStore = create<FlowState>((set, get) => ({
   selectedNode: null,
   history: [],
   currentStep: -1,
+  snapToGrid: true,
   canUndo: false,
   canRedo: false,
+
+  toggleSnapToGrid: () => {
+    set(produce((state) => {
+      state.snapToGrid = !state.snapToGrid;
+    }));
+  },
 
   setNodes: (nodes) => {
     set(produce((state) => {

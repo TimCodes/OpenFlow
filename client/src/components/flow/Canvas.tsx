@@ -17,7 +17,7 @@ const nodeTypes = {
 };
 
 const Canvas = () => {
-  const { nodes, edges, setNodes, setEdges, onNodesChange, onEdgesChange } = useFlowStore();
+  const { nodes, edges, setNodes, setEdges, onNodesChange, onEdgesChange, snapToGrid } = useFlowStore();
   const { screenToFlowPosition } = useReactFlow();
 
   const onConnect = useCallback(
@@ -65,9 +65,11 @@ const Canvas = () => {
         onDrop={onDrop}
         onDragOver={onDragOver}
         nodeTypes={nodeTypes}
+        snapToGrid={snapToGrid}
+        snapGrid={[15, 15]}
         fitView
       >
-        <Background />
+        <Background gap={15} size={1} />
         <Controls />
         <MiniMap />
       </ReactFlow>
