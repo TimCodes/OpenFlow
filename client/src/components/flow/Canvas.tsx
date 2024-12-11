@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import ReactFlow, {
   Background,
   Controls,
@@ -38,7 +38,11 @@ const Canvas = () => {
         type: 'smoothstep',
         label: 'Edge Label',
         animated: false,
-        style: { stroke: '#666' }
+        style: { 
+          stroke: '#666',
+          strokeWidth: 2,
+          cursor: 'pointer'
+        }
       };
       setEdges((eds) => addEdge(newEdge, eds));
     },
@@ -97,6 +101,28 @@ const Canvas = () => {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'move';
   }, []);
+
+  const onKeyDown = useCallback((event: KeyboardEvent) => {
+    if (event.key === 'Delete' || event.key === 'Backspace') {
+      const selectedNodeId = nodes.find(node => node.selected)?.id;
+      const selectedEdgeId = edges.find(edge => edge.selected)?.id;
+
+      if (selectedNodeId) {
+        setNodes(nodes.filter(node => node.id !== selectedNodeId));
+      }
+      if (selectedEdgeId) {
+        setEdges(edges.filter(edge => edge.id !== selectedEdgeId));
+      }
+    }
+  }, [nodes, edges, setNodes, setEdges]);
+
+  // Add keyboard event listener
+  useEffect(() => {
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [onKeyDown]);
 
   return (
     <div className="w-full h-full">
