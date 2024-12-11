@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import ReactFlow, {
   Background,
   Controls,
@@ -11,6 +11,7 @@ import ReactFlow, {
 } from 'reactflow';
 import { useFlowStore } from '@/hooks/useFlowStore';
 import CustomNode from '@/components/flow/CustomNode';
+import EdgeLabelDialog from '@/components/flow/EdgeLabelDialog';
 
 const nodeTypes = {
   custom: CustomNode,
@@ -56,15 +57,20 @@ const Canvas = () => {
     [selectEdge]
   );
 
+  const [editingEdge, setEditingEdge] = useState<Edge | null>(null);
+
   const onEdgeDoubleClick = useCallback(
     (_: React.MouseEvent, edge: Edge) => {
-      const newLabel = window.prompt('Enter edge label:', edge.label as string);
-      if (newLabel !== null) {
-        updateEdge(edge.id, { ...edge, label: newLabel });
-      }
+      setEditingEdge(edge);
     },
-    [updateEdge]
+    []
   );
+
+  const handleEdgeLabelSave = useCallback((newLabel: string) => {
+    if (editingEdge) {
+      updateEdge(editingEdge.id, { ...editingEdge, label: newLabel });
+    }
+  }, [editingEdge, updateEdge]);
 
   const onDrop = useCallback(
     (event: React.DragEvent) => {
@@ -145,6 +151,12 @@ const Canvas = () => {
         <Controls />
         <MiniMap />
       </ReactFlow>
+      <EdgeLabelDialog
+        isOpen={!!editingEdge}
+        onClose={() => setEditingEdge(null)}
+        initialLabel={editingEdge?.label as string || ''}
+        onSave={handleEdgeLabelSave}
+      />
     </div>
   );
 };
