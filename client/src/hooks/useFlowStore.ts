@@ -75,8 +75,8 @@ export const useFlowStore = create<FlowState>((set, get) => ({
           return {
             ...change,
             position: {
-              x: Math.round(change.position.x / 15) * 15,
-              y: Math.round(change.position.y / 15) * 15,
+              x: Math.round(change.position.x / 25) * 25,
+              y: Math.round(change.position.y / 25) * 25,
             },
           };
         }

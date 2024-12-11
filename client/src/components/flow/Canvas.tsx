@@ -42,8 +42,8 @@ const Canvas = () => {
 
       if (snapToGrid) {
         position = {
-          x: Math.round(position.x / 15) * 15,
-          y: Math.round(position.y / 15) * 15,
+          x: Math.round(position.x / 25) * 25,
+          y: Math.round(position.y / 25) * 25,
         };
       }
 
@@ -76,10 +76,10 @@ const Canvas = () => {
         onDragOver={onDragOver}
         nodeTypes={nodeTypes}
         snapToGrid={snapToGrid}
-        snapGrid={[15, 15]}
+        snapGrid={[25, 25]}
         fitView
       >
-        <Background gap={15} size={1} />
+        <Background gap={25} size={1} color="#30363d" />
         <Controls />
         <MiniMap />
       </ReactFlow>
