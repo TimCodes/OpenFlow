@@ -18,10 +18,13 @@ const nodeTypes = {
 
 const Canvas = () => {
   const { nodes, edges, setNodes, setEdges, onNodesChange, onEdgesChange, snapToGrid } = useFlowStore();
-  const { screenToFlowPosition } = useReactFlow();
+  const { screenToFlowPosition, project } = useReactFlow();
 
   const onConnect = useCallback(
-    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
+    (params: Connection) => {
+      const newEdge = { ...params, type: 'smoothstep' };
+      setEdges((eds) => addEdge(newEdge, eds));
+    },
     [setEdges]
   );
 
@@ -32,10 +35,17 @@ const Canvas = () => {
       const type = event.dataTransfer.getData('application/reactflow');
       if (!type) return;
 
-      const position = screenToFlowPosition({
+      let position = screenToFlowPosition({
         x: event.clientX,
         y: event.clientY,
       });
+
+      if (snapToGrid) {
+        position = {
+          x: Math.round(position.x / 15) * 15,
+          y: Math.round(position.y / 15) * 15,
+        };
+      }
 
       const newNode: Node = {
         id: `${type}-${Date.now()}`,

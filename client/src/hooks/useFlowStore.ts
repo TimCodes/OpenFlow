@@ -70,7 +70,19 @@ export const useFlowStore = create<FlowState>((set, get) => ({
 
   onNodesChange: (changes) => {
     set(produce((state) => {
-      state.nodes = applyNodeChanges(changes, state.nodes);
+      const processedChanges = changes.map(change => {
+        if (change.type === 'position' && state.snapToGrid && change.position) {
+          return {
+            ...change,
+            position: {
+              x: Math.round(change.position.x / 15) * 15,
+              y: Math.round(change.position.y / 15) * 15,
+            },
+          };
+        }
+        return change;
+      });
+      state.nodes = applyNodeChanges(processedChanges, state.nodes);
       state.history = [...state.history.slice(0, state.currentStep + 1), { nodes: state.nodes, edges: state.edges }];
       state.currentStep += 1;
       state.canUndo = state.currentStep > 0;
