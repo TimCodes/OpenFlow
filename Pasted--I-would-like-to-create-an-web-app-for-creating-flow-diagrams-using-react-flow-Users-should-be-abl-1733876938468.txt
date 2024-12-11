@@ -1,0 +1,73 @@
+
+I would like to create an web app for creating flow diagrams using react flow. Users should be able to create, edit and delete the nodes of the workflow. You should be able to input text or images in the nodes. . All back ends calls should be mocked in memory for now. Please use Shadcn as the component library, and only native react hooks for state management. This is only a prrof of concept. Below are the requirements
+
+
+### **Core Features**
+
+#### **1. Diagram Creation**
+
+- **Add Nodes**: Allow users to add nodes to the canvas. Nodes can be created via a toolbar, context menu, or shortcut keys.
+- **Connect Nodes**: Users can draw edges between nodes to represent relationships or workflow steps.
+- **Drag and Drop**: Support for dragging nodes within the canvas to arrange the workflow layout dynamically.
+
+#### **2. Node Management**
+
+- **Edit Nodes**:
+    - Input text or images into nodes.
+    - Configurable properties like labels, descriptions, or custom attributes.
+- **Delete Nodes**: Enable removal of nodes and auto-update connected edges.
+- **Node Types**: Support for multiple node types (e.g., text nodes, image nodes, data nodes).
+
+#### **3. Canvas Features**
+
+- **Zoom and Pan**: Allow users to zoom in/out and pan around the canvas.
+- **Grid Layout**: Option to snap nodes to a grid for cleaner alignment.
+- **Undo/Redo**: Track user actions and allow undo/redo for better usability.
+- **Save/Load Workflow**:
+    - Save the workflow to a backend or local storage.
+    - Load previously saved workflows.
+
+#### **4. Edge Management**
+
+- **Edit Edges**: Allow users to modify edge labels or add properties (e.g., weights, conditions).
+- **Delete Edges**: Enable users to remove edges easily.
+
+#### **5. User Interface**
+
+- **Toolbar**: Tools for adding nodes, toggling grid snap, saving/loading, and other actions.
+- **Sidebar**: Display properties of the selected node or edge for editing.
+- **Custom Styling**: Allow users to change colors, shapes, or styles of nodes and edges.
+
+
+
+### **Technical Requirements**
+
+#### **1. Front-End Framework**
+
+- **React.js**: Core library for building the UI.
+- **React Flow**: For managing nodes, edges, and interactions within the canvas.
+
+#### **2. State Management**
+
+- **React Context or Redux**: Manage the state of nodes, edges, and UI preferences.
+- **Immer.js** (optional): To simplify immutable state updates.
+
+#### **3. Styling**
+
+- **CSS Framework**: Tailwind CSS, Styled Components, or a similar library for rapid styling.
+- **Customizable Themes**: Support for light and dark themes.
+
+#### **4. File Handling**
+
+- **Export/Import**: Save workflows as JSON files for sharing or reloading.
+- **Image Handling**: Integrate libraries like FilePond or native file input for uploading images.
+
+#### **5. Backend Integration (Optional)**
+
+- **Node.js/Express**: For saving workflows to a database or fetching templates.
+- **Database**: Use MongoDB, PostgreSQL, or Firebase for persisting workflow data.
+
+#### **6. Testing and Deployment**
+
+- **Testing**: Jest and React Testing Library for unit and integration tests.
+- **Deployment**: Use services like Vercel, Netlify, or AWS Amplify for hosting.
